@@ -570,8 +570,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Author**: Jed Lanelle
-**Project**: NASA NEO ETL Pipeline
-**Status**: Production - Running on Cloud Composer 3
-**Last Updated**: November 2, 2025
+**Author**: Jed Lanelle \
+**Project**: NASA NEO ETL Pipeline \
+**Status**: Production - Deployed on Cloud Composer 3 \
+**Last Updated**: November 2, 2025 \
 **Deployment**: `nasa-neo-pipeline` (asia-southeast2)
