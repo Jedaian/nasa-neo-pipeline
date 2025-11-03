@@ -40,14 +40,7 @@ The addition of Google Cloud Storage as a data lake provides several key advanta
 6. **Disaster Recovery**: Complete data backup independent of BigQuery
 
 ## 🏗️ Architecture
-
-```
-NASA API → Airflow ETL → GCS Raw Data → BigQuery (Partitioned & Clustered) → Dataform Assertions → Materialized View
-    ↓           ↓              ↓              ↓                                  ↓                    ↓
-Raw JSON → Transformation → Data Lake → Optimized Storage → Data Quality Validation → Real-time Analytics
-                                                                                                      ↓
-                                                                                             Dashboard Queries
-```
+<img title ='ETL Architecture' src="architecture/nasa_neo_pipeline_architecture.drawio-2.png">
 
 ### Data Flow
 1. **Extract**: Fetch NEO data from NASA API for specific date range
@@ -239,7 +232,7 @@ Access Airflow UI at `http://localhost:8080` (airflow/airflow) and set up:
 
 The pipeline is currently deployed on Cloud Composer 3. Below are the deployment steps for reference or redeployment:
 
-#### 1. Create Cloud Composer 3 Environment (Already Completed)
+#### 1. Create Cloud Composer 3 Environment
 ```bash
 gcloud composer environments create nasa-neo-pipeline \
     --location asia-southeast2 \
@@ -248,7 +241,7 @@ gcloud composer environments create nasa-neo-pipeline \
     --project nasa-neo-pipeline
 ```
 
-#### 2. Install Python Dependencies (Already Completed)
+#### 2. Install Python Dependencies
 ```bash
 # Upload requirements.txt to Composer
 gcloud composer environments update nasa-neo-pipeline \
@@ -256,7 +249,7 @@ gcloud composer environments update nasa-neo-pipeline \
     --update-pypi-packages-from-file requirements.txt
 ```
 
-#### 3. Configure Secrets in Google Secret Manager (Already Completed)
+#### 3. Configure Secrets in Google Secret Manager
 
 **Production Setup**: NASA API keys are now stored securely in Google Secret Manager:
 
@@ -276,7 +269,7 @@ gcloud secrets add-iam-policy-binding nasa-api-key \
 
 **Note**: The DAG now retrieves API keys directly from Secret Manager using `GoogleCloudSecretManagerHook`, eliminating the need for Airflow Connections for API keys.
 
-#### 4. Upload DAG Files (Already Completed)
+#### 4. Upload DAG Files
 ```bash
 # Get the DAGs bucket
 DAGS_BUCKET=$(gcloud composer environments describe nasa-neo-pipeline \
@@ -288,7 +281,7 @@ gsutil -m cp -r dags/* ${DAGS_BUCKET}/
 gsutil -m cp -r config ${DAGS_BUCKET}/
 ```
 
-#### 5. Verify Deployment (Completed - Production Running)
+#### 5. Verify Deployment
 - ✅ Composer Airflow UI accessible from GCP Console
 - ✅ DAG `dag_ingest_neo_nasa_api_bigquery` visible and active
 - ✅ Secret Manager integration verified
